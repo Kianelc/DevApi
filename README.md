@@ -1,4 +1,4 @@
-## Desagio DevApi
+## Desafio DevApi
 
 ### Instruções para rodar o projeto
 
