@@ -1,0 +1,380 @@
+{
+    "openapi": "3.0.1",
+    "info": {
+      "title": "DevApi",
+      "description": "Uma Web API criada para a DevApi que será consumida pelo portal web",
+      "license": {
+        "name": "MIT",
+        "url": "https://opensource.org/licenses/MIT"
+      },
+      "version": "1.0.0"
+    },
+    "servers": [
+      {
+        "url": "http://localhost:3000/api"
+      },
+      {
+        "url": "https://localhost:3000/api"
+      }
+    ],
+    "tags": [
+      {
+        "name": "Usuario",
+        "description": "Operações sobre o usuário"
+      },
+      {
+        "name": "Conector",
+        "description": "Operações sobre os conectores"
+      }
+    ],
+    "paths": {
+      "/register": {
+        "post": {
+          "tags": [
+            "Usuario"
+          ],
+          "summary": "Cria novo usuário",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Registro"
+                }
+              }
+            },
+            "required": false
+          },
+          "responses": {
+            "200": {
+                "$ref": "#/components/responses/SuccessfulOperation"
+            },
+            "400": {
+              "description": "Falha no registro do usuário",
+              "content": {}
+            },
+            "422": {
+              "description": "Usuário já existe",
+              "content": {}
+            }
+          },
+          "x-codegen-request-body-name": "body"
+        }
+      },
+      "/authenticate": {
+        "post": {
+          "tags": [
+            "Usuario"
+          ],
+          "summary": "Logar usuário no sistema",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Login"
+                }
+              }
+            },
+            "required": false
+          },
+          "responses": {
+            "400": {
+              "description": "A autenticação do usuário falhou",
+              "content": {}
+            },
+            "401": {
+              "description": "Senha inválida",
+              "content": {}
+            },
+            "404": {
+              "description": "Usuário não encontrado",
+              "content": {}
+            }
+          },
+          "x-codegen-request-body-name": "body"
+        }
+      },
+      "/create": {
+        "post": {
+          "tags": [
+            "Conector"
+          ],
+          "summary": "Criar um novo conector",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Conector"
+                }
+              }
+            },
+            "required": false
+          },
+          "responses": {
+            "200": {
+              "$ref": "#/components/responses/SuccessfulOperation",
+              "content": {}
+            },
+            "400": {
+              "description": "Falha no registro do conector",
+              "content": {}
+            },
+            "401": {
+                "$ref": "#/components/responses/UnauthorizedError"
+            }
+          },
+          "x-codegen-request-body-name": "body",
+          "security": [
+            {
+              "Bearer": []
+            }
+          ]
+        }
+      },
+      "/read": {
+        "get": {
+          "tags": [
+            "Conector"
+          ],
+          "summary": "Lista todos os conectores cadastrados",
+          "parameters": [
+            {
+              "name": "name",
+              "in": "query",
+              "description": "Nome do conector",
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "category",
+              "in": "query",
+              "description": "Categoria do conector",
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "type",
+              "in": "query",
+              "description": "Tipo do conector",
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "privacy",
+              "in": "query",
+              "description": "Tipo de privacidade do conector",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "400": {
+              "description": "Falha ao obter a lista de conectores",
+              "content": {}
+            },
+            "401": {
+                "$ref": "#/components/responses/UnauthorizedError"
+            }
+          },
+          "security": [
+            {
+              "Bearer": []
+            }
+          ]
+        }
+      },
+      "/update/{id}": {
+        "put": {
+          "tags": [
+            "Conector"
+          ],
+          "summary": "Atualiza um conector",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "description": "ID do conector",
+              "required": true,
+              "schema": {
+                "type": "integer",
+                "format": "int64"
+              }
+            }
+          ],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Conector"
+                }
+              }
+            }
+          },
+          "responses": {
+            "400": {
+              "description": "Falha ao atualizar os dados do conector",
+              "content": {}
+            },
+            "401": {
+                "$ref": "#/components/responses/UnauthorizedError"
+            }
+          },
+          "x-codegen-request-body-name": "body",
+          "security": [
+            {
+              "Bearer": []
+            }
+          ]
+        }
+      },
+      "/delete/{id}": {
+        "delete": {
+          "tags": [
+            "Conector"
+          ],
+          "summary": "Remove um conector",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "description": "ID do conector",
+              "required": true,
+              "schema": {
+                "type": "integer",
+                "format": "int64"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "$ref": "#/components/responses/SuccessfulOperation",
+              "content": {}
+            },
+            "400": {
+              "description": "Falha ao remover o conector",
+              "content": {}
+            },
+            "401": {
+                "$ref": "#/components/responses/UnauthorizedError"
+            }
+          },
+          "security": [
+            {
+              "Bearer": []
+            }
+          ]
+        }
+      }
+    },
+    "components": {
+      "schemas": {
+        "Login": {
+          "required": [
+            "email",
+            "password"
+          ],
+          "type": "object",
+          "properties": {
+            "email": {
+              "type": "string",
+              "description": "O email do usuário para login",
+              "example": "kiane@example.com"
+            },
+            "password": {
+              "type": "string",
+              "description": "A senha para login em texto não criptografado",
+              "example": "123456"
+            }
+          }
+        },
+        "Registro": {
+          "required": [
+            "email",
+            "name"
+          ],
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "example": "Kiane L. Casagrande"
+            },
+            "email": {
+              "type": "string",
+              "example": "kiane@example.com"
+            },
+            "password": {
+              "type": "string",
+              "example": "123456"
+            }
+          }
+        },
+        "Conector": {
+          "required": [
+            "id",
+            "name",
+            "type",
+            "privacy",
+            "category",
+            "status"
+          ],
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "number",
+              "example": "1"
+            },
+            "name": {
+              "type": "string",
+              "example": "Web Api"
+            },
+            "type": {
+              "type": "string",
+              "example": "SOAP"
+            },
+            "privacy": {
+              "type": "string",
+              "example": "PUBLIC"
+            },
+            "base_url": {
+              "type": "string",
+              "example": "https://teste.com"
+            },
+            "logo_url":  {
+              "type": "string",
+              "example": "https://teste.jpg"
+            },
+            "category":  {
+              "type": "string",
+              "example": "Teste"
+            },
+            "description":  {
+              "type": "string",
+              "example": "Teste de descrição do web api SOAP"
+            },
+            "status": {
+              "type": "boolean",
+              "example": "true"
+            }
+          }
+        }
+      },
+      "responses": {
+            "SuccessfulOperation": {
+                "description": "Operação bem sucedida"
+            },
+            "UnauthorizedError": {
+              "description": "Token de acesso ausente ou inválido"
+            }
+      },
+      "securitySchemes": {
+        "Bearer": {
+          "type": "http",
+          "scheme": "bearer",
+          "bearerFormat": "JWT"
+        }
+      }
+    }
+  }
